@@ -37,3 +37,6 @@ DROP TABLE MEMBER [90107-232]
 	at org.h2.server.web.WebThread.process(WebThread.java:190)
 	at org.h2.server.web.WebThread.run(WebThread.java:103)
 	at java.base/java.lang.Thread.run(Thread.java:833)
+2025-05-20 11:14:28.660285+09:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "DELETE [*]* FROM BOARD"; expected "identifier"; SQL statement:
+DELETE * FROM BOARD [42001-232]

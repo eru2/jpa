@@ -42,7 +42,7 @@ public class Board {
     //@Lob : 대용량 데이터 매핑
     @Column(name = "BOARD_CONTENT", nullable = false)
     @Lob
-    private String noticeContent;
+    private String boardContent;
 
     @Column(name = "ORIGIN_NAME", length = 100)
     private String originName;
@@ -64,6 +64,14 @@ public class Board {
     @JoinColumn(name = "BOARD_WRITER")
     private Member member;
 
+    public void changeMember(Member member) {
+        this.member = member;
+        if(!member.getBoards().contains(this)) {
+            member.getBoards().add(this);
+        }
+    }
+
+
     //Reply : Board (N : 1)
     @OneToMany(mappedBy = "board", cascade = CascadeType.ALL)
     private List<Reply> replies = new ArrayList<>();
@@ -81,4 +89,25 @@ public class Board {
             this.status = CommonEnums.Status.Y;
         }
     }
+
+    public void changeFile(String originName, String changeName) {
+        this.originName = originName;
+        this.changeName = changeName;
+    }
+
+
+    public void updateBoard(String title, String content, String originName, String changeName, LocalDateTime createDate) {
+        this.boardTitle = title;
+        this.boardContent = content;
+        this.originName = originName;
+        this.changeName = changeName;
+        this.createDate = createDate;
+    }
+
+    public void increaseCount() {
+        this.count = this.count + 1;
+    }
+
+
+
 }
