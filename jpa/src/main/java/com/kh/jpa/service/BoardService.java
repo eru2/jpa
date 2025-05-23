@@ -14,6 +14,4 @@ public interface BoardService {
     BoardDto.Response updateBoard(Long boardNo, BoardDto.Update updateDto);
     void deleteBoard(Long boardNo);
     Integer countBoard(Long boardNo);
-
-
 }

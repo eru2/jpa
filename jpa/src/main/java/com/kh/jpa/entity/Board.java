@@ -90,6 +90,10 @@ public class Board {
         }
     }
 
+    //BoardTag : Board (N : 1 )
+
+
+
     public void changeFile(String originName, String changeName) {
         this.originName = originName;
         this.changeName = changeName;

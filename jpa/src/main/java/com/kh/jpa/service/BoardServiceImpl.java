@@ -18,19 +18,21 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-@Transactional
 @Transactional(readOnly = true)
 public class BoardServiceImpl implements BoardService {
 
     private final BoardRepository boardRepository;
     private final MemberRepository memberRepository;
     private final TagRepository tagRepository;
+    private final String UPLOAD_PATH = "C:\\dev";
+
 
     @Override
     public Page<BoardDto.Response> getBoardList(Pageable pageable) {
@@ -54,6 +56,7 @@ public class BoardServiceImpl implements BoardService {
         return BoardDto.Response.toDto(board);
     }
 
+    @Override
     public Long createBoard(BoardDto.Create createBoard) throws IOException {
         //게시글작성
         //작성자 찾기 -> 객체지향코드를 작성할 것이기때문에 key를 직접 외래키로 insert하지않고
@@ -108,10 +111,14 @@ public class BoardServiceImpl implements BoardService {
 
 
 
+
     @Override
     public BoardDto.Response updateBoard(Long boardNo, BoardDto.Update updateDto) {
         Board board = boardRepository.findOne(boardNo)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지않는 게시글입니다."));
+        String changeName = board.getChangeName();
+        String originName = board.getOriginName();
+
         board.updateBoard(
                 updateDto.getBoardTitle(),
                 updateDto.getBoardContent(),

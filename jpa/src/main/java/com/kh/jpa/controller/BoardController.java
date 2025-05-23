@@ -2,16 +2,25 @@ package com.kh.jpa.controller;
 
 import com.kh.jpa.dto.BoardDto;
 import com.kh.jpa.dto.PageResponse;
-import com.kh.jpa.repository.MemberRepository;
+import com.kh.jpa.entity.Board;
 import com.kh.jpa.service.BoardService;
+import java.io.IOException;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/boards")
@@ -19,54 +28,39 @@ import java.util.List;
 public class BoardController {
 
     private final BoardService boardService;
-    private final MemberRepository memberRepository;
-    private final String UPLOAD_PATH = "C:\\dev";
-
     /*
- page 보고자하는 페이지 번호
- size 몇개씩 가지고 올것인지
- sort 정렬 기준 : 속성, 방향 (boardTitle,desc)
-  */
-    //게시글 목록 조회
+    page 보고자하는 페이지 번호
+    size 몇개씩 가지고 올것인지
+    sort 정렬 기준 : 속성, 방향 (boardTitle,desc)
+     */
     @GetMapping
     public ResponseEntity<PageResponse<BoardDto.Response>> getBoards(
             @PageableDefault(size = 5, sort = "createDate", direction = Sort.Direction.DESC) Pageable pageable) {
         return ResponseEntity.ok(new PageResponse<>(boardService.getBoardList(pageable)));
     }
 
-    //게시글 상세 조회
     @GetMapping("/{id}")
     public ResponseEntity<BoardDto.Response> getBoard(@PathVariable("id") Long boardNo) {
         return ResponseEntity.ok(boardService.getBoardDetail(boardNo));
     }
 
-    //게시글 작성
     @PostMapping
-    public ResponseEntity<Long> addBoard(@ModelAttribute BoardDto.Create createDto) {
-        Long boardNo = boardService.createBoard(createDto);
-        return ResponseEntity.ok(boardNo);
+    public ResponseEntity<Long> createBoard(@ModelAttribute BoardDto.Create boardCreate) throws IOException {
+        return ResponseEntity.ok(boardService.createBoard(boardCreate));
     }
 
-    //게시글 전체 수정
-    @PutMapping("/{boardNo}")
-    public ResponseEntity<BoardDto.Response> updateBoard(
-            @PathVariable Long boardNo,
-            @RequestBody BoardDto.Update updateDto) {
-        return ResponseEntity.ok(boardService.updateBoard(boardNo, updateDto));
-    }
-
-    //게시글 삭제
-    @DeleteMapping("/{boardNo}")
-    public ResponseEntity<Void> deleteBoard(@PathVariable Long boardNo) {
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteBoard(@PathVariable("id") Long boardNo) {
         boardService.deleteBoard(boardNo);
         return ResponseEntity.ok().build();
     }
 
-    //게시글 조회수 증가
-    @PostMapping("/{boardNo}/count")
-    public ResponseEntity<Integer> countBoard(@PathVariable Long boardNo) {
-        boardService.countBoard(boardNo);
-        return ResponseEntity.ok().build();
+    @PatchMapping("/{id}")
+    public ResponseEntity<BoardDto.Response> updateBoard(
+            @PathVariable("id") Long boardNo,
+            @ModelAttribute BoardDto.Update updateBoard
+    ) throws IOException {
+        return ResponseEntity.ok(boardService.updateBoard(boardNo, updateBoard));
     }
 
 }
