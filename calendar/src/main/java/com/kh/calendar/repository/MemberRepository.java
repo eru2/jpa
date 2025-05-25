@@ -11,5 +11,6 @@ public interface MemberRepository {
     Optional<Member> getMembe(Integer id);
 
     Optional<Member> findByUserId(String userId);
+    Optional<Member> findById(Integer id);
 
 }

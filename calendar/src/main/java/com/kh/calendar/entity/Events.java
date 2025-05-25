@@ -10,6 +10,7 @@ import java.time.LocalDate;
 @NoArgsConstructor(access = AccessLevel.PROTECTED) //JPA 스펙상 필수 + 외부 생성 방지
 @AllArgsConstructor
 @Builder
+@Setter
 public class Events {
 
     @Id
@@ -37,3 +38,4 @@ public class Events {
     }
 
 }
+

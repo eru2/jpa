@@ -43,5 +43,11 @@ public class MemberRepositoryImpl implements MemberRepository {
                 .stream()
                 .findFirst();
     }
+    @Override
+    public Optional<Member> findById(Integer id) {
+        Member member = em.find(Member.class, id);
+        return Optional.ofNullable(member);
+    }
+
 
 }

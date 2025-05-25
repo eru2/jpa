@@ -22,8 +22,8 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public MemberDto.Response getMember(Integer Id) {
-        return memberRepository.getMembe(Id)
+    public MemberDto.Response getMember(Integer id) {
+        return memberRepository.findById(id)
                 .map(MemberDto.Response::toDto)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다."));
     }

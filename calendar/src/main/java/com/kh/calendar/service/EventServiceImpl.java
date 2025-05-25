@@ -15,34 +15,35 @@ import java.util.List;
 import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
 public class EventServiceImpl implements EventService {
 
     private final EventRepository eventRepository;
     private final MemberRepository memberRepository;
 
     @Override
+    @Transactional
     public Long createEvent(EventDto.Create createDto) {
-        Member member = memberRepository.findByUserId(createDto.getUserId())
-                .orElseThrow(() -> new EntityNotFoundException("회원을 찾을 수 없습니다."));
 
-        Events event = Events.builder()
-                .title(createDto.getTitle())
-                .description(createDto.getDescription())
-                .date(createDto.getDate())
-                .member(member)
-                .build();
+        Member member = memberRepository.findById(createDto.getId())
+                .orElseThrow(() -> new IllegalArgumentException("회원이 존재하지 않습니다."));
 
-        return eventRepository.save(event);
+        Events event = createDto.toEntity();
+        event.setMember(member);
+        eventRepository.save(event);
+
+        return event.getEvent_No();
     }
 
+
     @Override
+    @Transactional
     public List<EventDto.Response> findByUserId(String userId) {
         List<Events> events = eventRepository.findByUserId(userId);
         return events.stream().map(this::toDto).collect(Collectors.toList());
     }
 
     @Override
+    @Transactional
     public EventDto.Response findById(Long eventId) {
         Events event = eventRepository.findById(eventId)
                 .orElseThrow(() -> new EntityNotFoundException("일정을 찾을 수 없습니다."));
@@ -59,6 +60,7 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
+    @Transactional
     public void deleteEvent(Long eventId) {
         Events event = eventRepository.findById(eventId)
                 .orElseThrow(() -> new EntityNotFoundException("일정을 찾을 수 없습니다."));

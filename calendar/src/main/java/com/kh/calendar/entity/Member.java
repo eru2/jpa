@@ -43,7 +43,7 @@ public class Member {
     private String reason;
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
-    List<Events> boards = new ArrayList<>();
+    List<Events> events = new ArrayList<>();
 
 
 

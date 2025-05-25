@@ -18,6 +18,7 @@ import java.util.List;
 public class EventsController {
     private final EventService eventService;
 
+
     @GetMapping
     public ResponseEntity<List<EventDto.Response>> getEvents(@RequestParam("userId") String userId) {
         List<EventDto.Response> events = eventService.findByUserId(userId);
@@ -30,23 +31,23 @@ public class EventsController {
         return ResponseEntity.ok(id);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<EventDto.Response> getEvent(@PathVariable Long id) {
-        EventDto.Response event = eventService.findById(id);
+    @GetMapping("/{event_no}")
+    public ResponseEntity<EventDto.Response> getEvent(@PathVariable Long event_no) {
+        EventDto.Response event = eventService.findById(event_no);
         return ResponseEntity.ok(event);
     }
 
-    @PatchMapping("/{id}")
+    @PatchMapping("/{event_no}")
     public ResponseEntity<EventDto.Response> updateEvent(
-            @PathVariable Long id,
+            @PathVariable Long event_no,
             @RequestBody EventDto.Update updateDto) {
-        EventDto.Response updated = eventService.updateEvent(id, updateDto);
+        EventDto.Response updated = eventService.updateEvent(event_no, updateDto);
         return ResponseEntity.ok(updated);
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteEvent(@PathVariable Long id) {
-        eventService.deleteEvent(id);
+    @DeleteMapping("/{event_no}")
+    public ResponseEntity<Void> deleteEvent(@PathVariable Long event_no) {
+        eventService.deleteEvent(event_no);
         return ResponseEntity.ok().build();
     }
 }
