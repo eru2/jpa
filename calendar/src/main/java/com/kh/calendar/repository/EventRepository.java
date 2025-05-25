@@ -8,5 +8,8 @@ import java.util.List;
 import java.util.Optional;
 
 public interface EventRepository {
-    Page<Events> getEventList(Integer id, Pageable pageable);
+    Long save(Events event);
+    Optional<Events> findById(Long eventId);
+    List<Events> findByUserId(String userId);
+    void delete(Events event);
 }

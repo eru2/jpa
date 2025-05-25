@@ -33,4 +33,15 @@ public class MemberRepositoryImpl implements MemberRepository {
     public Optional<Member> getMembe(Integer id) {
         return Optional.ofNullable(em.find(Member.class, id));
     }
+
+    @Override
+    public Optional<Member> findByUserId(String userId) {
+        String query = "SELECT m FROM Member m WHERE m.userId = :userId";
+        return em.createQuery(query, Member.class)
+                .setParameter("userId", userId)
+                .getResultList()
+                .stream()
+                .findFirst();
+    }
+
 }

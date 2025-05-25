@@ -12,10 +12,11 @@ public class EventDto {
     @AllArgsConstructor
     @NoArgsConstructor
     public static class Create {
+        private String userId;
         private String title;
         private String description;
         private LocalDate date;
-        private Integer Id;
+        private Long event_No;
 
         public Events toEntity() {
             return Events.builder()
@@ -41,7 +42,7 @@ public class EventDto {
     @NoArgsConstructor
     @Builder
     public static class Response {
-        private Integer event_no;
+        private Long event_no;
         private String title;
         private String description;
         private LocalDate date;
@@ -58,4 +59,7 @@ public class EventDto {
         }
 
     }
+
+
+
 }

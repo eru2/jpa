@@ -8,6 +8,13 @@ import java.util.List;
 import java.util.Optional;
 
 public interface EventService {
-    List<EventDto.Response> getEventList(Integer id, Pageable pageable);
-    Integer addEvent(EventDto eventDto);
+    Long createEvent(EventDto.Create createDto);
+
+    List<EventDto.Response> findByUserId(String userId);
+
+    EventDto.Response findById(Long eventId);
+
+    EventDto.Response updateEvent(Long eventId, EventDto.Update updateDto);
+
+    void deleteEvent(Long eventId);
 }

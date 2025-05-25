@@ -9,4 +9,7 @@ public interface MemberRepository {
 
     Optional<Member> findByUserIdAndUserPwd(String userId, String userPwd);
     Optional<Member> getMembe(Integer id);
+
+    Optional<Member> findByUserId(String userId);
+
 }

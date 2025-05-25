@@ -19,18 +19,26 @@ public class EventRepositoryImpl implements EventRepository {
     private EntityManager em;
 
     @Override
-    public Page<Events> getEventList(Integer id, Pageable pageable) {
-        List<Events> events = em.createQuery(
-                "SELECT e FROM Events e WHERE e.member.userId = :userId ORDER BY e.date ASC", Events.class)
-                .setParameter("userId", id)
-                .setFirstResult((int) pageable.getOffset())
-                .setMaxResults(pageable.getPageSize())
-                .getResultList();
-        Long total = em.createQuery(
-                "SELECT COUNT(e) FROM Events e WHERE e.member.userId = :userId", Long.class)
-                .setParameter("userId", id)
-                .getSingleResult();
+    public Long save(Events event) {
+        em.persist(event);
+        return event.getEvent_No();
+    }
 
-        return new PageImpl<Events>(events, pageable, total);
+    @Override
+    public Optional<Events> findById(Long eventId) {
+        return Optional.ofNullable(em.find(Events.class, eventId));
+    }
+
+    @Override
+    public List<Events> findByUserId(String userId) {
+        String query = "SELECT e FROM Events e WHERE e.member.userId = :userId ORDER BY e.date ASC";
+        return em.createQuery(query, Events.class)
+                .setParameter("userId", userId)
+                .getResultList();
+    }
+
+    @Override
+    public void delete(Events event) {
+        em.remove(event);
     }
 }

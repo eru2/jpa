@@ -15,7 +15,7 @@ public class Events {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "EVENT_NO")
-    Integer event_No;
+    Long event_No;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "USER_ID", nullable = false)
@@ -30,5 +30,10 @@ public class Events {
     @Column(name = "EVENT_DATE")
     private LocalDate date;
 
+    public void update(String title, String description, LocalDate date) {
+        this.title = title;
+        this.description = description;
+        this.date = date;
+    }
 
 }
