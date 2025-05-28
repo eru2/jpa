@@ -28,16 +28,13 @@ public class Member {
     private String userId;
 
     @Column(name = "USER_PWD", length = 20, nullable = false)
-    private String userPwd;
+    private String password;
 
     @Column(name = "USER_NAME", length = 20, nullable = false)
     private String userName;
 
     @Column(name = "NICK_NAME", length = 30, nullable = false)
     private String nickName;
-
-    @Column(name = "BIRTH", length = 10)
-    private LocalDate birth;
 
     @Column(name = "REASON", length = 200)
     private String reason;

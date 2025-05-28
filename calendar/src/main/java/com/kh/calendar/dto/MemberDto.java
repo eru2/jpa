@@ -16,21 +16,22 @@ public class MemberDto {
     @Setter
     @AllArgsConstructor
     @NoArgsConstructor
+    @Builder
     public static class Create {
-        private String user_Id;
-        private String user_Pwd;
-        private String user_Name;
-        private String nick_Name;
-        private String birthday;
+        private String userId;
+        private String password;
+        private String name;
+        private String nickName;
         private List<String> reason;
 
         public Member toEntity() {
+            System.out.println("DEBUG: userId = " + this.userId);
+            System.out.println("DEBUG: nickName = " + this.nickName);
             return Member.builder()
-                    .userId(this.user_Id)
-                    .userPwd(this.user_Pwd)
-                    .userName(this.user_Name)
-                    .nickName(this.nick_Name)
-                    .birth(LocalDate.parse(this.birthday))
+                    .userId(this.userId)
+                    .password(this.password)
+                    .userName(this.name)
+                    .nickName(this.nickName)
                     .reason(String.join(",", this.reason))
                     .build();
         }
@@ -42,7 +43,7 @@ public class MemberDto {
     @AllArgsConstructor
     public static class Login {
         private String userId;
-        private String userPwd;
+        private String password;
 
     }
 
@@ -53,21 +54,19 @@ public class MemberDto {
     @Builder
     public static class Response {
         private Integer Id;
-        private String user_id;
-        private String user_pwd;
-        private String user_Name;
-        private String nick_Name;
-        private LocalDate birthday;
+        private String userId;
+        private String password;
+        private String userName;
+        private String nickName;
         private List<String> reason;
 
         public static Response toDto(Member member) {
             return Response.builder()
                     .Id(member.getId())
-                    .user_id(member.getUserId())
-                    .user_pwd(member.getUserPwd())
-                    .user_Name(member.getUserName())
-                    .nick_Name(member.getNickName())
-                    .birthday(member.getBirth())
+                    .userId(member.getUserId())
+                    .password(member.getPassword())
+                    .userName(member.getUserName())
+                    .nickName(member.getNickName())
                     .reason(member.getReason() != null ? List.of(member.getReason().split(",")) : List.of())
                     .build();
         }

@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,6 +15,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/events")
+@CrossOrigin(origins = "http://localhost:5173", allowCredentials = "true")
 @RequiredArgsConstructor
 public class EventsController {
     private final EventService eventService;
@@ -27,9 +29,10 @@ public class EventsController {
 
     @PostMapping
     public ResponseEntity<Long> createEvent(@RequestBody EventDto.Create createDto) {
-        Long id = eventService.createEvent(createDto);
-        return ResponseEntity.ok(id);
+        Long eventNo = eventService.createEvent(createDto);
+        return ResponseEntity.ok(eventNo);
     }
+
 
     @GetMapping("/{event_no}")
     public ResponseEntity<EventDto.Response> getEvent(@PathVariable Long event_no) {

@@ -7,8 +7,8 @@ import java.util.Optional;
 public interface MemberRepository {
     void save(Member member);
 
-    Optional<Member> findByUserIdAndUserPwd(String userId, String userPwd);
-    Optional<Member> getMembe(Integer id);
+    Optional<Member> findByUserIdAndUserPwd(String userId, String password);
+    Optional<Member> getMember(Integer id);
 
     Optional<Member> findByUserId(String userId);
     Optional<Member> findById(Integer id);

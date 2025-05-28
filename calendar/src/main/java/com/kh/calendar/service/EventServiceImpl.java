@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 @Service
@@ -22,17 +23,22 @@ public class EventServiceImpl implements EventService {
 
     @Override
     @Transactional
-    public Long createEvent(EventDto.Create createDto) {
+    public Long createEvent(EventDto.Create dto) {
+        Member member = memberRepository.findByUserId(dto.getUser_Id())
+                .orElseThrow(() -> new IllegalArgumentException("해당 회원을 찾을 수 없습니다."));
 
-        Member member = memberRepository.findById(createDto.getId())
-                .orElseThrow(() -> new IllegalArgumentException("회원이 존재하지 않습니다."));
+        Events event = Events.builder()
+                .title(dto.getTitle())
+                .description(dto.getDescription())
+                .date(dto.getDate())
+                .member(member)
+                .build();
 
-        Events event = createDto.toEntity();
-        event.setMember(member);
         eventRepository.save(event);
-
         return event.getEvent_No();
     }
+
+
 
 
     @Override

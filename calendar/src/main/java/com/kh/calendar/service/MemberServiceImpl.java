@@ -30,7 +30,9 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public Member logInUser(MemberDto.Login loginDto) {
-        return memberRepository.findByUserIdAndUserPwd(loginDto.getUserId(), loginDto.getUserPwd())
+        System.out.println("userId = " + loginDto.getUserId());
+        System.out.println("password = " + loginDto.getPassword());
+        return memberRepository.findByUserIdAndUserPwd(loginDto.getUserId(), loginDto.getPassword())
                 .orElseThrow(() -> new IllegalArgumentException("아이디 또는 비밀번호가 일치하지 않습니다."));
     }
 

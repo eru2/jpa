@@ -19,18 +19,18 @@ public class MemberRepositoryImpl implements MemberRepository {
     }
 
     @Override
-    public Optional<Member> findByUserIdAndUserPwd(String userId, String userPwd) {
+    public Optional<Member> findByUserIdAndUserPwd(String user_Id, String password) {
         return em.createQuery(
-                "SELECT m FROM Member m WHERE m.userId = :userId AND m.userPwd = :userPwd", Member.class)
-                .setParameter("userId", userId)
-                .setParameter("userPwd", userPwd)
+                "SELECT m FROM Member m WHERE m.userId = :userId AND m.password = :password", Member.class)
+                .setParameter("userId", user_Id)
+                .setParameter("password", password)
                 .getResultList()
                 .stream()
                 .findFirst();
     }
 
     @Override
-    public Optional<Member> getMembe(Integer id) {
+    public Optional<Member> getMember(Integer id) {
         return Optional.ofNullable(em.find(Member.class, id));
     }
 

@@ -9,25 +9,28 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/members")
+@CrossOrigin(origins = "http://localhost:5173", allowCredentials = "true")
 @RequiredArgsConstructor
 public class MemberController {
     private final MemberService memberService;
 
+    //회원가입
     @PostMapping("/Enroll")
     public ResponseEntity<String> addMember (@RequestBody MemberDto.Create createDto){
         String user = memberService.createMember(createDto);
         return ResponseEntity.ok(user);
     }
 
+    //로그인
     @PostMapping("/login")
     public ResponseEntity<MemberDto.Response> logInUser(@RequestBody MemberDto.Login loginDto) {
         Member member = memberService.logInUser(loginDto);
         return ResponseEntity.ok(MemberDto.Response.toDto(member));
     }
 
-    @GetMapping("/{Id}")
+    @GetMapping("/{userId}")
     public ResponseEntity<MemberDto.Response> getMember(
-            @PathVariable int Id) {
-        return ResponseEntity.ok(memberService.getMember(Id));
+            @PathVariable int userId) {
+        return ResponseEntity.ok(memberService.getMember(userId));
     }
 }
